@@ -1,0 +1,268 @@
+/* L'Occhialeria Milano · Niguarda — «L'ultima riga.»
+   La pagina è un ottotipo: la tavola dell'esame della vista, righe sempre più piccole.
+   Ogni sezione è una riga numerata in decimi. Palette dalle loro foto: carta d'ottotipo,
+   inchiostro, il petrolio delle pareti del negozio, il legno chiaro dei mobili, l'ottone. */
+
+/* ── reset tecnico (PLUMBING) ── */
+[hidden]{display:none !important}
+img{max-width:100%;height:auto}
+*,*::before,*::after{box-sizing:border-box}
+
+:root{
+  --carta:#F4EFE4; --carta-2:#EDE6D6; --bianco:#FBF9F4; --inchiostro:#14181A; --grigio:#5B6165;
+  --petrolio:#1E5A66; --petrolio-scuro:#153F48; --legno:#C9A46B; --ottone:#B8894A; --rosso:#C6362B;
+  --f-txt:'Lexend',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'Azeret Mono','Courier New',monospace;
+  --lato:clamp(1.2rem,6vw,6rem);
+  --testata:66px;
+}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--testata) + 8px)}
+body{margin:0;font-family:var(--f-txt);font-weight:300;font-size:1.08rem;line-height:1.6;color:var(--inchiostro);background:var(--carta);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--f-txt);font-weight:800;line-height:1;margin:0;letter-spacing:.02em}
+h2{font-size:clamp(2.3rem,5.6vw,4.8rem);letter-spacing:-.01em}
+h3{font-size:clamp(1.3rem,2.4vw,1.8rem);font-weight:700}
+p{margin:0 0 1em}
+b,strong{font-weight:600}
+:focus-visible{outline:3px solid var(--petrolio);outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* reveal: stato iniziale solo dietro .js (anti-flash) */
+.js .reveal{opacity:0}
+.js .reveal.in-view{opacity:1}
+html:not(.js) .reveal{opacity:1}
+
+/* ── i decimi (etichetta mono di ogni riga/sezione) ── */
+.dec{font-family:var(--f-mono);font-weight:500;font-size:.85rem;letter-spacing:.06em;color:var(--petrolio)}
+.kicker{display:flex;align-items:center;gap:.8rem;margin:0 0 1rem;font-weight:500;font-size:.95rem;letter-spacing:.14em;text-transform:uppercase}
+.kicker .dec{padding:.25em .55em;border:1.5px solid currentColor;border-radius:4px}
+
+/* ── bottoni ── */
+.bottone{display:inline-flex;align-items:center;justify-content:center;gap:.5em;padding:.8em 1.4em;font-family:var(--f-txt);font-weight:600;font-size:1rem;letter-spacing:.04em;text-decoration:none;border:2px solid transparent;border-radius:6px;line-height:1;transition:transform .2s,background-color .2s,color .2s}
+.bottone:hover{transform:translateY(-2px)}
+.bottone--petrolio{background:var(--petrolio);color:#fff}
+.bottone--petrolio:hover{background:var(--petrolio-scuro)}
+.bottone--inchiostro{background:var(--inchiostro);color:var(--carta)}
+.bottone--inchiostro:hover{background:#000}
+.bottone--filo{border-color:var(--inchiostro);color:var(--inchiostro)}
+.bottone--filo:hover{background:var(--inchiostro);color:var(--carta)}
+.bottone--filo-chiaro{border-color:rgba(244,239,228,.7);color:var(--carta)}
+.bottone--filo-chiaro:hover{background:var(--carta);color:var(--petrolio)}
+.bottone--carta{background:var(--carta);color:var(--petrolio)}
+.bottone--carta:hover{background:#fff}
+
+/* ── intro: tre righe di lettere che compaiono ── */
+.intro{position:fixed;inset:0;z-index:300;display:grid;place-content:center;justify-items:center;gap:.6rem;background:var(--carta);color:var(--inchiostro);transition:opacity .6s,visibility .6s}
+.intro.hide{opacity:0;visibility:hidden}
+.intro__r{font-weight:800;letter-spacing:.35em;line-height:1;animation:leggi .5s ease-out both}
+.intro__r:nth-child(1){font-size:clamp(4rem,12vw,8rem)}
+.intro__r:nth-child(2){font-size:clamp(2.4rem,7vw,4.6rem);animation-delay:.35s}
+.intro__r:nth-child(3){font-size:clamp(1.3rem,4vw,2.4rem);animation-delay:.7s}
+@keyframes leggi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.intro__skip{margin-top:1.4rem;background:none;border:0;color:var(--grigio);font:inherit;font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+
+/* ── testata (fondo pieno, NIENTE backdrop-filter) ── */
+.testata{position:sticky;top:0;z-index:90;display:flex;align-items:center;justify-content:space-between;gap:1rem;height:var(--testata);padding:0 clamp(1rem,4vw,3rem);background:rgba(244,239,228,.97);color:var(--inchiostro);border-bottom:1px solid rgba(20,24,26,.12)}
+.marchio{display:inline-flex;flex-direction:column;text-decoration:none;line-height:1}
+.marchio__n{font-weight:800;font-size:1.2rem;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.marchio__s{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;color:var(--petrolio);margin-top:.2rem;white-space:nowrap}
+.nav{display:flex;gap:clamp(.9rem,2vw,2rem)}
+.nav a{font-weight:500;font-size:.95rem;letter-spacing:.04em;text-decoration:none;padding:.2em 0;border-bottom:2px solid transparent}
+.nav a:hover{border-bottom-color:var(--petrolio)}
+.testata__coda{display:flex;align-items:center;gap:.8rem}
+.lingue{display:flex;border:1.5px solid rgba(20,24,26,.4);border-radius:6px;overflow:hidden}
+.lingue button{background:none;border:0;color:var(--inchiostro);font-family:var(--f-mono);font-size:.8rem;letter-spacing:.08em;padding:.35em .6em;cursor:pointer;opacity:.6}
+.lingue button.is-on{background:var(--inchiostro);color:var(--carta);opacity:1}
+.burger{display:none;position:relative;z-index:96;width:44px;height:44px;padding:0;background:none;border:0;cursor:pointer}
+.burger span{display:block;width:26px;height:2px;margin:6px auto;background:var(--inchiostro);border-radius:2px;transition:transform .25s,opacity .25s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+.drawer{position:fixed;inset:var(--testata) 0 0 0;z-index:89;display:flex;flex-direction:column;gap:.2rem;padding:2rem clamp(1.2rem,6vw,3rem);background:var(--petrolio);color:var(--carta);overflow-y:auto}
+.drawer a{font-weight:700;font-size:clamp(1.8rem,8vw,3rem);text-decoration:none;line-height:1.15;border-bottom:1px solid rgba(244,239,228,.2);padding:.25em 0}
+.drawer a.drawer__cta{margin-top:1.4rem;border:0;color:var(--legno);font-size:clamp(1.3rem,5vw,1.8rem)}
+
+/* ── apertura: l'ottotipo ── */
+.apertura{position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);min-height:calc(100vh - var(--testata));min-height:calc(100svh - var(--testata));background:var(--carta);overflow:hidden}
+.apertura__testo{align-self:center;container-type:inline-size;padding:clamp(2rem,4vw,3.5rem) clamp(1rem,3vw,3rem) clamp(2rem,4vw,3.5rem) var(--lato)}
+.ottotipo{margin:0;padding:0;list-style:none;border-left:4px solid var(--inchiostro);padding-left:clamp(.9rem,2vw,1.6rem);overflow:hidden}
+/* le righe si misurano sulla larghezza della colonna (cqw): la tavola non si taglia mai */
+.riga--0 .riga__t{font-size:clamp(3.6rem,14cqw,9rem);letter-spacing:.06em;padding:.02em 0 .04em;line-height:.9}
+.riga{display:grid;grid-template-columns:3.2rem minmax(0,1fr);align-items:baseline;gap:.6rem;margin:0}
+.riga .dec{align-self:center}
+.riga__t{display:block;margin:0;font-weight:800;text-transform:uppercase;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:clip}
+.riga--1 .riga__t{font-size:clamp(1.6rem,8.3cqw,5.6rem);letter-spacing:.06em;padding:.06em 0 .1em}
+.riga--2 .riga__t{font-size:clamp(1rem,4.4cqw,3rem);letter-spacing:.1em;padding:.08em 0}
+.riga--3 .riga__t{font-size:clamp(.85rem,3.6cqw,2.4rem);letter-spacing:.14em;padding:.14em 0}
+.riga--4 .riga__t{font-size:clamp(.7rem,2.55cqw,1.7rem);letter-spacing:.16em;padding:.2em 0;font-weight:700}
+.riga--5 .riga__t{font-size:clamp(.58rem,1.9cqw,1.25rem);letter-spacing:.18em;padding:.3em 0;font-weight:700}
+.riga--6 .riga__t{font-size:.55rem;letter-spacing:.2em;padding:.4em 0;font-weight:700;color:var(--grigio);cursor:pointer;background:none;border:0;font-family:inherit;text-align:left;transition:font-size .45s cubic-bezier(.2,.8,.2,1),color .3s;white-space:normal}
+.riga--6 .riga__t{position:relative}
+.riga--6 .riga__t::after{content:'';position:absolute;left:0;right:0;top:-12px;bottom:-12px} /* area di tocco anche quando la riga è minuscola */
+.riga--6 .riga__t:hover{color:var(--petrolio)}
+.riga--6.is-letta .riga__t{font-size:clamp(1.1rem,2.2vw,1.9rem);letter-spacing:.06em;color:var(--petrolio);text-transform:none}
+.apertura__nota{margin:1.1rem 0 0;font-size:.95rem;color:var(--grigio)}
+.apertura__azioni{display:flex;flex-wrap:wrap;gap:.8rem;margin:1.4rem 0 1rem}
+.apertura__stato{display:inline-flex;align-items:center;gap:.6rem;margin:0;font-weight:500}
+.spia{width:.7em;height:.7em;border-radius:50%;background:var(--petrolio);box-shadow:0 0 0 4px rgba(30,90,102,.18)}
+.apertura__foto{margin:0;position:relative;overflow:hidden;min-height:420px;background:var(--petrolio)}
+.apertura__foto img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+.apertura__foto figcaption{position:absolute;left:0;bottom:0;padding:.6rem 1rem;background:rgba(20,24,26,.82);color:var(--carta);font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase}
+
+/* ── blocchi ── */
+.blocco{position:relative;overflow:hidden;padding:clamp(4rem,8vw,7.5rem) var(--lato)}
+.blocco h2{margin-bottom:.4em}
+.lead{max-width:56ch;font-size:clamp(1.1rem,1.4vw,1.3rem);line-height:1.5}
+.griglia-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(2rem,5vw,5rem);align-items:center}
+.shot{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;text-align:left}
+.shot img{width:100%;border-radius:6px}
+
+/* 2/10 MAESTRI — blocco petrolio */
+.maestri{background:var(--petrolio);color:var(--carta)}
+.maestri .kicker{color:var(--legno)}
+.maestri .kicker .dec{color:var(--legno)}
+.maestri h2{color:#fff}
+.maestri__foto{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;align-items:start}
+.maestri__foto .shot:first-child{grid-row:span 2}
+.maestri__foto .shot:first-child img{aspect-ratio:4/5;object-fit:cover;object-position:50% 20%}
+.maestri__foto .shot:not(:first-child) img{aspect-ratio:4/3;object-fit:cover}
+.maestri__date{list-style:none;margin:1.6rem 0 0;padding:0;display:grid;grid-template-columns:repeat(3,auto);gap:1.2rem 2rem;justify-content:start}
+.maestri__date b{display:block;font-family:var(--f-mono);font-weight:600;font-size:clamp(1.6rem,3vw,2.4rem);color:var(--legno);line-height:1}
+.maestri__date span{font-size:.95rem;opacity:.9}
+
+/* 3/10 ESAME */
+.esame{background:var(--carta)}
+.esame .shot img{aspect-ratio:4/3;object-fit:cover}
+.passi{list-style:none;margin:1.4rem 0 0;padding:0;display:grid;gap:.7rem}
+.passi li{display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start;padding:1rem 1.1rem;background:var(--bianco);border-radius:8px;border-left:5px solid var(--petrolio)}
+.passi b{font-weight:700;font-size:1.05rem}
+.passi span{font-size:1rem}
+
+/* 4/10 LENTI — tavola */
+.lenti{background:var(--carta-2)}
+.tavola{list-style:none;margin:clamp(1.6rem,3vw,2.6rem) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.8rem,1.6vw,1.4rem)}
+.tavola li{padding:1.4rem 1.3rem 1.2rem;background:var(--bianco);border-radius:8px;border-top:6px solid var(--petrolio)}
+.tavola li h3{margin-bottom:.4em}
+.tavola li p{margin:0;font-size:1rem}
+.tavola li.tavola--largo{grid-column:span 3;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem 2rem;border-top-color:var(--ottone)}
+.tavola--largo h3{grid-column:span 4;margin-bottom:0}
+.tavola--largo div b{display:block;font-weight:700;margin-bottom:.15em}
+.tavola--largo div span{font-size:.95rem}
+
+/* 5/10 MONTATURE — blocco inchiostro */
+.montature{background:var(--inchiostro);color:var(--carta)}
+.montature .kicker{color:var(--legno)}
+.montature .kicker .dec{color:var(--legno)}
+.montature h2{color:#fff}
+.marchi{list-style:none;margin:clamp(1.6rem,3vw,2.6rem) 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid rgba(244,239,228,.25);border-left:1px solid rgba(244,239,228,.25)}
+.marchi li{padding:1.1rem 1rem 1.2rem;border-right:1px solid rgba(244,239,228,.25);border-bottom:1px solid rgba(244,239,228,.25)}
+.marchi b{display:block;font-weight:700;font-size:1.15rem;letter-spacing:.02em;margin-bottom:.3em;color:#fff}
+.marchi span{font-size:.92rem;opacity:.82;line-height:1.45;display:block}
+.montature__foto{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:clamp(.6rem,1.4vw,1.2rem);margin-top:clamp(1.6rem,3vw,2.6rem)}
+.montature__foto img{width:100%;height:clamp(200px,26vw,360px);object-fit:cover}
+.montature__mat{margin:1.4rem 0 0;font-size:1rem;opacity:.9;max-width:70ch}
+
+/* 6/10 LABORATORIO — legno */
+.laboratorio{background:var(--legno);color:var(--inchiostro)}
+.laboratorio .kicker{color:var(--inchiostro)}
+.laboratorio .kicker .dec{color:var(--inchiostro)}
+.laboratorio .shot img{aspect-ratio:3/2;object-fit:cover}
+
+/* 7/10 RATE — banda */
+.rate{background:var(--carta);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(2rem,5vw,5rem);align-items:center}
+.rate__n{font-family:var(--f-mono);font-weight:600;font-size:clamp(4rem,10vw,9rem);line-height:.9;color:var(--petrolio);margin:0}
+.rate__n small{display:block;font-size:.22em;letter-spacing:.2em;text-transform:uppercase;color:var(--inchiostro);margin-top:.3em}
+
+/* 8/10 RECENSIONI */
+.voci{background:var(--bianco)}
+.voci__griglia{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.badge{display:inline-grid;justify-items:start;padding:1.2rem 1.4rem;background:var(--petrolio);color:var(--carta);border-radius:10px}
+.badge b{font-family:var(--f-mono);font-weight:600;font-size:clamp(3rem,7vw,5.5rem);line-height:.9}
+.badge span{font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;margin-top:.5rem}
+.temi{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+.temi li{padding:.9rem 1.1rem;background:var(--carta);border-radius:8px;font-size:1.02rem}
+.temi b{display:block;font-weight:700;margin-bottom:.15em}
+.voci__cit{margin:1.4rem 0 0;padding-left:1rem;border-left:5px solid var(--petrolio)}
+.voci__cit p{font-weight:600;font-size:clamp(1.3rem,2.4vw,1.8rem);line-height:1.25;margin:0 0 .3em}
+.voci__cit footer{font-size:.92rem;color:var(--grigio)}
+.voci .bottone{margin-top:1.4rem}
+
+/* 9/10 DOVE */
+.dove{background:var(--carta)}
+.dove__griglia{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.dove__ind{font-weight:800;font-size:clamp(1.5rem,3vw,2.4rem);line-height:1.1;margin:.2em 0 .4em}
+.dove__tel{font-family:var(--f-mono);font-weight:600;font-size:1.6rem;color:var(--petrolio);text-decoration:none}
+.dove__no{list-style:none;margin:1rem 0 1.2rem;padding:0}
+.dove__no li{position:relative;padding:.45rem 0 .45rem 1.8rem;border-top:1px solid rgba(20,24,26,.15)}
+.dove__no li::before{content:"";position:absolute;left:0;top:.95rem;width:12px;height:12px;border-radius:50%;background:var(--rosso)}
+.dove__mappa iframe{display:block;width:100%;height:420px;min-height:360px;border:0;border-radius:8px;border-top:8px solid var(--petrolio)}
+.orari__tab{width:100%;border-collapse:collapse;border-top:4px solid var(--inchiostro);margin-top:1rem}
+.orari__tab th,.orari__tab td{padding:.55rem 0;border-bottom:1px solid rgba(20,24,26,.18);text-align:left;font-weight:600;font-size:1.02rem;line-height:1.2}
+.orari__tab td{text-align:right;font-family:var(--f-mono);font-weight:500;font-size:.95rem}
+.orari__tab tr.is-today th,.orari__tab tr.is-today td{color:var(--petrolio)}
+.orari__tab tr.is-today th::before{content:"";display:inline-block;width:.5em;height:.5em;margin-right:.4em;border-radius:50%;background:var(--petrolio);vertical-align:.1em}
+
+/* 10/10 DOMANDE */
+.domande{background:var(--carta-2)}
+.domande__lista{max-width:60rem;border-top:2px solid var(--inchiostro)}
+.domande details{border-bottom:2px solid var(--inchiostro)}
+.domande summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:1rem;padding:1rem 0 .9rem;font-weight:600;font-size:clamp(1.05rem,1.8vw,1.35rem);line-height:1.25}
+.domande summary::-webkit-details-marker{display:none}
+.domande summary::after{content:"+";font-family:var(--f-mono);font-size:1.3em;line-height:.8;color:var(--petrolio)}
+.domande details[open] summary::after{content:"–"}
+.domande details p{max-width:60ch;padding-bottom:1.1rem;font-size:1.02rem}
+
+/* piede */
+.piede{padding:clamp(3rem,6vw,5rem) var(--lato) calc(clamp(3rem,6vw,5rem) + 60px);background:var(--inchiostro);color:var(--carta);text-align:center}
+.piede__n{font-weight:800;font-size:clamp(1.6rem,4vw,2.6rem);letter-spacing:.12em;text-transform:uppercase;line-height:1;margin-bottom:.3em}
+.piede__s{font-family:var(--f-mono);font-size:.85rem;letter-spacing:.12em;color:var(--legno);margin-bottom:1.2em}
+.piede__d{font-size:1rem}
+.piede__b{font-size:.88rem;opacity:.7;max-width:64ch;margin:1.4rem auto 0}
+
+/* barra mobile */
+.barra{display:none}
+
+/* lightbox */
+.lightbox{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:3vmin;background:rgba(10,14,16,.95)}
+.lightbox img{max-width:94vw;max-height:88vh;width:auto;height:auto}
+.lightbox__x{position:absolute;top:.6rem;right:.9rem;width:48px;height:48px;background:none;border:0;color:#fff;font-size:2.6rem;line-height:1;cursor:pointer}
+
+/* ── responsive ── */
+@media (max-width:960px){
+  .nav{display:none}
+  .burger{display:block}
+  .testata .bottone{display:none}
+  .apertura{grid-template-columns:1fr}
+  .apertura__testo{padding:2rem var(--lato) 1.8rem}
+  .apertura__foto{min-height:0;height:56vw}
+  .griglia-2,.voci__griglia,.dove__griglia,.rate{grid-template-columns:1fr}
+  .tavola{grid-template-columns:1fr 1fr}
+  .tavola li.tavola--largo{grid-column:span 2;grid-template-columns:1fr 1fr}
+  .tavola--largo h3{grid-column:span 2}
+  .marchi{grid-template-columns:repeat(3,1fr)}
+  .montature__foto{grid-template-columns:1fr 1fr}
+  .montature__foto .shot:first-child{grid-column:span 2}
+}
+@media (max-width:640px){
+  body{font-size:1.02rem}
+  .riga{grid-template-columns:2.6rem minmax(0,1fr);gap:.4rem}
+  /* sul telefono le righe basse si stringono davvero (è una tavola): mai tagliate, mai a capo */
+  .riga--4 .riga__t{font-size:clamp(.55rem,2.55cqw,1.7rem);letter-spacing:.1em}
+  .riga--5 .riga__t{font-size:clamp(.46rem,1.9cqw,1.25rem);letter-spacing:.08em}
+  .riga--6 .riga__t{font-size:.42rem;letter-spacing:.1em;white-space:nowrap}
+  .riga--6.is-letta .riga__t{font-size:1.05rem;white-space:normal}
+  .tavola,.marchi{grid-template-columns:1fr 1fr}
+  .tavola li.tavola--largo{grid-template-columns:1fr}
+  .tavola--largo h3{grid-column:span 1}
+  .maestri__date{grid-template-columns:1fr 1fr 1fr;gap:1rem}
+  .barra{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--inchiostro);border-top:3px solid var(--petrolio);transform:translateY(110%);transition:transform .3s}
+  .barra.is-visible{transform:none}
+  .barra a{padding:.8rem .2rem .7rem;text-align:center;font-weight:600;font-size:.9rem;letter-spacing:.04em;text-decoration:none;color:var(--carta);border-right:1px solid rgba(244,239,228,.15)}
+  .barra a:first-child{background:var(--petrolio);color:#fff}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+  .reveal{opacity:1 !important;transform:none !important}
+}
